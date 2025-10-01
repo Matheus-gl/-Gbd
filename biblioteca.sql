@@ -37,7 +37,7 @@ CREATE TABLE locacao (
     livro_id INT NOT NULL,
     estudante_id INT NOT NULL,
     FOREIGN KEY (livro_id) REFERENCES Livro(livro_id),
-    FOREIGN KEY (estudante_id) REFERENCES Estudante(etudante_id)
+    FOREIGN KEY (estudante_id) REFERENCES Estudante(estudante_id)
 );
 
 -- exemplos ignorar:
