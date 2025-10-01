@@ -28,7 +28,7 @@ CREATE TABLE Estudante (
 );
 
 --loan (id, book_id, student_id, data_retirada, data_prevista, data_devolucao)
-CREATE TABLE locacao (
+CREATE TABLE Locacao (
     locacao_id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     data_retirada DATE NOT NULL,
