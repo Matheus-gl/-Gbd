@@ -14,15 +14,15 @@ CREATE TABLE Categoria (
 CREATE TABLE Livro (
     livro_id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
-    fk_autor_id INT,
-    fk_categoria_id INT,
-    ano_publicacao(DATE),
-    FOREIGN KEY (fk_autor_id) REFERENCES Autor(autor_id),
-    FOREIGN KEY (fk_categoria_id) REFERENCES Categoria(categoria_id)
+    fk_autor_id INT NOT NULL,
+    fk_categoria_id INT NOT NULL,
+    ano_publicacao DATE,
+    CONSTRAINT fk_livro_autor FOREIGN KEY (fk_autor_id) REFERENCES Autor(autor_id) ON DELETE CASCADE,
+    CONSTRAINT fk_livro_categoria FOREIGN KEY (fk_categoria_id) REFERENCES Categoria(categoria_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Estudante (
-    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    estudante_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100)
 );
@@ -31,12 +31,26 @@ CREATE TABLE Estudante (
 CREATE TABLE locacao (
     locacao_id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
-    ano_publicacao(DATE),
+    data_retirada DATE NOT NULL,
+    data_prevista DATE GENERATED ALWAYS AS (DATE_ADD(data_retirada, INTERVAL 21 DAY)) STORED,
+    data_devolucao DATE,
+    livro_id INT NOT NULL,
+    estudante_id INT NOT NULL,
     FOREIGN KEY (livro_id) REFERENCES Livro(livro_id),
-    FOREIGN KEY (autor_id) REFERENCES Autor(autro_id)
+    FOREIGN KEY (estudante_id) REFERENCES Estudante(etudante_id)
 );
 
--- exemplo
+-- exemplos ignorar:
+
+-- Tabela de álbuns
+CREATE TABLE album (
+  id INT AUTO_INCREMENT,
+  title VARCHAR(128) UNIQUE,
+  artist_id INT,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_album_artist FOREIGN KEY (artist_id)
+    REFERENCES artist(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 -- Criar tabela pai 1
 CREATE TABLE tabela_pai1 (
