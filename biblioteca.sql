@@ -260,4 +260,33 @@ delete from Autor
 where autor_id = 3;
 -- os livros tambem sao excluidos
 
+-- criar view que mostre: título do livro, aluno, data prevista e status (Em dia ou Atrasado).
+CREATE VIEW vw_loans AS
+SELECT 
+    lv.titulo AS livro,
+    e.nome AS aluno,
+    l.data_prevista,
+    CASE 
+        WHEN l.data_devolucao IS NULL AND l.data_prevista < CURDATE() THEN 'Atrasado'
+        WHEN l.data_devolucao > l.data_prevista THEN 'Atrasado'
+        ELSE 'Em dia'
+    END AS status
+FROM Locacao l
+JOIN Estudante e ON l.estudante_id = e.estudante_id
+JOIN Livro lv ON l.livro_id = lv.livro_id;
+
+-- visualizar a view
+select * from vw_loans;
+
+
+-- consulta que mostre a quantidade de livros emprestados por categoria
+SELECT 
+    c.nome AS categoria,
+    COUNT(lv.livro_id) AS total_emprestimos
+FROM Categoria c
+JOIN Livro lv ON lv.categoria_id = c.categoria_id
+JOIN Locacao l ON l.livro_id = lv.livro_id
+GROUP BY c.categoria_id, c.nome
+ORDER BY total_emprestimos DESC;
+
 
